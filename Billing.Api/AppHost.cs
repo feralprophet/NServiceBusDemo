@@ -27,10 +27,6 @@ namespace Billing.Api
             ConfigureDi(unityContainer);
             container.Adapter = new UnityIocAdapter(unityContainer);
             ConfigureMessageEndpoint(unityContainer);
-            
-           
-            
-
         }
 
         private void ConfigureMessageEndpoint(IUnityContainer container)
@@ -41,6 +37,7 @@ namespace Billing.Api
             endpointConfiguration.UseTransport<MsmqTransport>();
             endpointConfiguration.PurgeOnStartup(true);
             endpointConfiguration.EnableInstallers();
+            endpointConfiguration.UseSerialization<JsonSerializer>();
             endpointConfiguration.RegisterComponents(configuredComponents =>
             {
                 configuredComponents.ConfigureComponent<PolicyTermService>(DependencyLifecycle.InstancePerCall);
@@ -58,9 +55,6 @@ namespace Billing.Api
             var endpoint = NServiceBus.Endpoint.Start(endpointConfiguration).GetAwaiter().GetResult();
 
             container.RegisterInstance(endpoint);
-
-
-
         }
 
         private void ConfigureDi(IUnityContainer container)

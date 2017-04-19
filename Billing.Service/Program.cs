@@ -23,6 +23,8 @@ namespace Billing.Service
             endpointConfig.UseTransport<MsmqTransport>();
             endpointConfig.UsePersistence<InMemoryPersistence>();
             endpointConfig.EnableInstallers();
+
+            endpointConfig.UseSerialization<JsonSerializer>();
             endpointConfig.SendFailedMessagesTo("error");
 
             var endpointInstance = await Endpoint.Start(endpointConfig).ConfigureAwait(false);

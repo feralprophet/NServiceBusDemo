@@ -14,6 +14,11 @@ namespace Billing.Service.Handlers
         {
             //todo: do some work
             Console.WriteLine($"We just created {message.PolicyNumber}");
+
+            await context.Publish<TermCreatedEvent>(e =>
+            {
+                e.PolicyNumber = message.PolicyNumber;
+            });
         }
     }
 }
